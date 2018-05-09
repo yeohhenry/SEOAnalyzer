@@ -1,0 +1,78 @@
+﻿@model SEOAnalyzer.ViewModels.ResultViewModel
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Search", "Home", FormMethod.Post))
+{
+    <h2>Search</h2>
+    <div>
+        <label valign="top" class="control-label">Text</label>
+
+        <textarea name="searchtext" value="@SEOAnalyzer.ViewModels.ResultViewModel.SearchData.SearchText" class="form-control"></textarea>
+        <br />
+
+        <label class="control-label">URL</label>
+        <input type="text" name="urltext" value="@SEOAnalyzer.ViewModels.ResultViewModel.SearchData.SearchURL" class="form-control" />
+        <br />
+        @Html.ValidationMessage("UrlError")
+
+        <input type="checkbox" name="pageOccurrence" value=@(SEOAnalyzer.ViewModels.ResultViewModel.SearchData.IsCheckPageOccurrence ? "true" : "false") onclick="$(this).attr('value', this.checked ? 'true' : 'false')"> Number of occurrences on the page of each word<br>
+        <input type="checkbox" name="metaOccurrence" , value=@(SEOAnalyzer.ViewModels.ResultViewModel.SearchData.IsCheckMetaOccurrence ? "true" : "false") onclick="$(this).attr('value', this.checked ? 'true' : 'false')"> Number of occurrences on the page of each word listed in meta tags<br>
+        <input type="checkbox" name="linkOccurrence" , value=@(SEOAnalyzer.ViewModels.ResultViewModel.SearchData.IsCheckLinkOccurrence ? "true" : "false") onclick="$(this).attr('value', this.checked ? 'true' : 'false')"> Number of external links in the text<br>
+
+        <br />
+        <input type="submit" value="Submit" class="form-control" />
+
+        <br />
+
+        <table class="table">
+            <tr>
+
+                <th>
+                    @Html.ActionLink("Value", "Search", new { sortOrder = ViewBag.WordSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Page Occurrence", "Search", new { sortOrder = ViewBag.PageSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Meta Occurrence", "Search", new { sortOrder = ViewBag.MetaSortParm })
+                </th>
+            </tr>
+
+            @if (SEOAnalyzer.ViewModels.ResultViewModel.Occurrences != null)
+            {
+                foreach (var item in SEOAnalyzer.ViewModels.ResultViewModel.Occurrences)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayTextFor(model => item.Word)
+                        </td>
+                        <td>
+                            @Html.DisplayTextFor(model => item.PageOccurrence)
+                        </td>
+                        <td>
+                            @Html.DisplayTextFor(model => item.MetaOccurrence)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No stopwords are available</td>
+                </tr>
+            }
+        </table>
+        <br />
+        <table class="table">
+            <tr>
+                <td>External link counted</td>
+                <td>
+                    @SEOAnalyzer.ViewModels.ResultViewModel.LinkOccurrence
+                </td>
+            </tr>
+        </table>
+    </div>
+}

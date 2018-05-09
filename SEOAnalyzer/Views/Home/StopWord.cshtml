@@ -1,0 +1,31 @@
+﻿@model IEnumerable<SEOAnalyzer.Models.StopWord>
+@{
+    ViewBag.Title = "StopWord";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("StopWord", "Home", FormMethod.Post))
+{
+    <h2>StopWord</h2>
+    <div>
+        <h3>Add stopword</h3>
+        <label>Value</label>
+        <input type="text" name="word" />
+        <input type="submit" value="Add"/>
+        <br />
+        <h3>Current stopword</h3>
+
+        <table>
+            <tr>
+                <th>Value</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayTextFor(model => item.Name)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
